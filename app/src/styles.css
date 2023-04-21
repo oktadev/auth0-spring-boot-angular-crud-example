@@ -2,3 +2,62 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* https://careydevelopment.us/blog/angular-how-to-add-breadcrumbs-to-your-ui */
+ol.breadcrumb {
+  padding: 0;
+  list-style-type: none;
+}
+
+.breadcrumb-item + .active {
+  color: inherit;
+  font-weight: 500;
+}
+
+.breadcrumb-item {
+  color: #3F51B5;
+  font-size: 1rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: rgb(108, 117, 125);
+  content: "/";
+}
+
+ol.breadcrumb li {
+  list-style-type: none;
+}
+
+@media only screen and (min-width: 960px) {
+  ol.breadcrumb li {
+    list-style-type: none;
+    display: inline
+  }
+}
+
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+

@@ -1,0 +1,15 @@
+form, h2 {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin: 10px auto;
+}
+
+.alert {
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+}
