@@ -1,1 +1,10 @@
-<a mat-raised-button color="primary" href="/groups">Manage JUG Tour</a>
+<div *ngIf="user; else login">
+  <h2>Welcome, {{ user.name }}!</h2>
+  <a mat-button color="primary" href="/groups">Manage JUG Tour</a>
+  <br/><br/>
+  <button mat-raised-button color="primary" (click)="auth.logout()">Logout</button>
+</div>
+<ng-template #login>
+  <p>Please log in to manage your JUG Tour.</p>
+  <button mat-raised-button color="primary" (click)="auth.login()">Login</button>
+</ng-template>
