@@ -17,18 +17,16 @@ jobs:
           cache: 'maven'
       - name: Run tests
         run: mvn verify -ntp
-      - name: List JARs
-        run: ls -l target/*.jar
       - name: Run e2e tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           start: mvn spring-boot:run -ntp -Pprod
-          install: false
+          install: true
           wait-on: http://[::1]:8080
+          wait-on-timeout: 120
           config: baseUrl=http://localhost:8080
           project: ./app
-          timeout: 300
         env:
           OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
           OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
