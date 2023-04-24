@@ -3,18 +3,6 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="cypress" />
 
-Cypress.Commands.add('authenticatedRequest', data => {
-  return cy.getCookie('XSRF-TOKEN').then(csrfCookie => {
-    return cy.request({
-      ...data,
-      headers: {
-        ...data.headers,
-        'X-XSRF-TOKEN': csrfCookie.value,
-      },
-    });
-  });
-});
-
 Cypress.Commands.add('login', (username: string, password: string) => {
   Cypress.log({
     message: [`🔐 Authenticating: ${username}`],
@@ -32,7 +20,6 @@ Cypress.Commands.add('login', (username: string, password: string) => {
 declare global {
   namespace Cypress {
     interface Chainable {
-      authenticatedRequest(data): Cypress.Chainable;
       login(username: string, password: string): Cypress.Chainable;
     }
   }
