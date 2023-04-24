@@ -24,7 +24,7 @@ jobs:
           start: mvn spring-boot:run -Pprod -ntp
           install: false
           wait-on: http://[::1]:8080
-          config: baseUrl=http://localhost:4200
+          config: baseUrl=http://localhost:8080
         env:
           OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
           OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
