@@ -21,10 +21,11 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: mvn spring-boot:run -Pprod -ntp
+          start: java -Dspring.profiles.active=prod -jar ../target/*.jar
           install: false
           wait-on: http://[::1]:8080
           config: baseUrl=http://localhost:8080
+          working-directory: ./app
         env:
           OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
           OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
