@@ -17,6 +17,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+          cache: 'maven'
       - name: Install dependencies
         run: npm ci
         working-directory: ./app
@@ -24,12 +25,12 @@ jobs:
         run: xvfb-run npm test -- --watch=false
         working-directory: ./app
       - name: Run Spring Boot tests
-        run: mvn verify
+        run: mvn verify -ntp -Pprod
       - name: Run integration tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: mvn spring-boot:run -Pprod
+          start: java -jar -Dspring.profiles.active=prod target/*.jar
           install: false
           baseUrl: http://[::1]:8080
           wait-on: http://[::1]:8080
