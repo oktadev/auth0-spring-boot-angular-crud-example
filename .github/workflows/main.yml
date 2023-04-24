@@ -21,7 +21,16 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: mvn spring-boot:run -Pprod
+          start: mvn spring-boot:run -Pprod -ntp
           install: false
           wait-on: http://[::1]:8080
           config: baseUrl=http://localhost:4200
+        env:
+          OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
+          OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
+          OKTA_OAUTH2_CLIENT_SECRET: ${{ secrets.OKTA_OAUTH2_CLIENT_SECRET }}
+          OKTA_OAUTH2_AUDIENCE: ${{ secrets.OKTA_OAUTH2_AUDIENCE }}
+          CYPRESS_E2E_DOMAIN: ${{ secrets.CYPRESS_E2E_DOMAIN }}
+          CYPRESS_E2E_USERNAME: ${{ secrets.CYPRESS_E2E_USERNAME }}
+          CYPRESS_E2E_PASSWORD: ${{ secrets.CYPRESS_E2E_PASSWORD }}
+
