@@ -21,7 +21,8 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: cd .. && java -jar -Dspring.profiles.active=prod target/*.jar
+          start: java -jar -Dspring.profiles.active=prod target/*.jar
           install: false
-          baseUrl: http://[::1]:8080
           wait-on: http://[::1]:8080
+          with:
+            config: baseUrl=http://localhost:4200
