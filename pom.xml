@@ -159,10 +159,7 @@
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
-                                    <arguments>test</arguments>
-                                    <environmentVariables>
-                                        <CI>true</CI>
-                                    </environmentVariables>
+                                    <arguments>test -- --watch=false</arguments>
                                 </configuration>
                             </execution>
                             <execution>
