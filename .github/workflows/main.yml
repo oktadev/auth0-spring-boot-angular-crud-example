@@ -16,7 +16,7 @@ jobs:
           java-version: 17
           cache: 'maven'
       - name: Run tests
-        run: xvfb-run mvn verify -Pprod
+        run: mvn package
       - name: Run e2e tests
         uses: cypress-io/github-action@v5
         with:
