@@ -21,7 +21,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: java -jar "../target/*.jar" --spring.profiles.active=prod
+          start: mvn spring-boot:run -Pprod -ntp -f ../pom.xml
           install: false
           wait-on: http://[::1]:8080
           wait-on-timeout: 120
