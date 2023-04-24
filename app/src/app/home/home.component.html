@@ -2,9 +2,9 @@
   <h2>Welcome, {{ user.name }}!</h2>
   <a mat-button color="primary" href="/groups">Manage JUG Tour</a>
   <br/><br/>
-  <button mat-raised-button color="primary" (click)="auth.logout()">Logout</button>
+  <button mat-raised-button color="primary" (click)="auth.logout()" id="logout">Logout</button>
 </div>
 <ng-template #login>
   <p>Please log in to manage your JUG Tour.</p>
-  <button mat-raised-button color="primary" (click)="auth.login()">Login</button>
+  <button mat-raised-button color="primary" (click)="auth.login()" id="login">Login</button>
 </ng-template>

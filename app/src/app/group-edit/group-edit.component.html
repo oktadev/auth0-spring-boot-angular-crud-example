@@ -40,7 +40,7 @@
     <button type="button" mat-mini-fab color="accent" (click)="addEvent()"
             aria-label="Add Event" *ngIf="group.id" matTooltip="Add Event"
             style="float: right; margin-top: -4px"><mat-icon>add</mat-icon></button>
-    <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid">Save</button>
-    <button type="button" mat-button color="accent" (click)="cancel()">Cancel</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid" id="save">Save</button>
+    <button type="button" mat-button color="accent" (click)="cancel()" id="cancel">Cancel</button>
   </div>
 </form>

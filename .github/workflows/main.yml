@@ -1,0 +1,35 @@
+name: JUG Tours CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./app
+      - name: Run Angular tests
+        run: xvfb-run npm test -- --watch=false
+        working-directory: ./app
+      - name: Run Spring Boot tests
+        run: mvn verify
+      - name: Run integration tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          start: mvn spring-boot:run -Pprod
+          install: false
+          baseUrl: http://[::1]:8080
+          wait-on: http://[::1]:8080
