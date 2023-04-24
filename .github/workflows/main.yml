@@ -16,12 +16,12 @@ jobs:
           java-version: 17
           cache: 'maven'
       - name: Run tests
-        run: mvn package
+        run: mvn package -ntp
       - name: Run e2e tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: java -jar -Dspring.profiles.active=prod target/*.jar
+          start: mvn spring-boot:run -Pprod
           install: false
           wait-on: http://[::1]:8080
           config: baseUrl=http://localhost:4200
