@@ -24,5 +24,4 @@ jobs:
           start: java -jar -Dspring.profiles.active=prod target/*.jar
           install: false
           wait-on: http://[::1]:8080
-          with:
-            config: baseUrl=http://localhost:4200
+          config: baseUrl=http://localhost:4200
