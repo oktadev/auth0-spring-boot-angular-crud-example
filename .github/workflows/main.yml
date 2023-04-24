@@ -17,6 +17,8 @@ jobs:
           cache: 'maven'
       - name: Run tests
         run: mvn package -ntp
+      - name: List JARs
+        run: ls -l target/*.jar
       - name: Run e2e tests
         uses: cypress-io/github-action@v5
         with:
