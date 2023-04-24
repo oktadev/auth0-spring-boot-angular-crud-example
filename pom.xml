@@ -155,7 +155,7 @@
                             <execution>
                                 <id>npm test</id>
                                 <goals>
-                                    <goal>test</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
