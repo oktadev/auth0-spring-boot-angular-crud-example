@@ -4,7 +4,8 @@ import com.okta.developer.jugtours.model.Group;
 import com.okta.developer.jugtours.model.GroupRepository;
 import com.okta.developer.jugtours.model.User;
 import com.okta.developer.jugtours.model.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,9 +22,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@Slf4j
 class GroupController {
 
+    private final Logger log = LoggerFactory.getLogger(GroupController.class);
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
