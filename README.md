@@ -54,7 +54,6 @@ Copy the results from the CLI into an okta.env file:
 export OKTA_OAUTH2_ISSUER=https://<your-auth0-domain>/
 export OKTA_OAUTH2_CLIENT_ID=<your-client-id>
 export OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
-export OKTA_OAUTH2_AUDIENCE=https://<your-auth0-domain>/api/v2/
 ```
 
 Then, run `source okta.env` to set the environment variables. Start your app and log in:

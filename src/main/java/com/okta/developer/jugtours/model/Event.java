@@ -21,6 +21,8 @@ public class Event {
     @ManyToMany
     private Set<User> attendees;
 
+    public Event() {}
+
     public Event(Instant date, String title, String description) {
         this.date = date;
         this.title = title;
