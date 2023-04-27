@@ -33,4 +33,5 @@ build/
 .vscode/
 
 *.env
+*.env.bat
 /app/node/

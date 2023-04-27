@@ -22,14 +22,12 @@ class Initializer implements CommandLineRunner {
     @Override
     public void run(String... strings) {
         Stream.of("Omaha JUG", "Kansas City JUG", "Chicago JUG",
-            "Dallas JUG", "Philly JUG", "Garden State JUG", "NY Java SIG")
+                "Dallas JUG", "Philly JUG", "Garden State JUG", "NY Java SIG")
             .forEach(name -> repository.save(new Group(name)));
 
         Group jug = repository.findByName("Garden State JUG");
-        Event e = Event.builder().title("OAuth for Java Developers")
-            .description("Learn all about OAuth and OIDC + Java!")
-            .date(Instant.parse("2023-10-18T18:00:00.000Z"))
-            .build();
+        Event e = new Event(Instant.parse("2023-10-18T18:00:00.000Z"),
+            "OAuth for Java Developers", "Learn all about OAuth and OIDC + Java!");
         jug.setEvents(Collections.singleton(e));
         repository.save(jug);
 
