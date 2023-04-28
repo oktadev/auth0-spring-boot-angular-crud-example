@@ -26,7 +26,6 @@ public class Group {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Event> events;
 
-    // JPA requires a default constructor
     public Group() {}
 
     public Group(String name) {
