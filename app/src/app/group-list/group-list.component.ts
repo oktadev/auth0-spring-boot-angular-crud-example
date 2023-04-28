@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./group-list.component.css']
 })
 export class GroupListComponent {
-  title = 'JUG Tours';
+  title = 'Group List';
   loading = true;
   groups: Group[] = [];
   displayedColumns = ['id','name','events','actions'];

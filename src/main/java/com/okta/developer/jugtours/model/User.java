@@ -54,15 +54,12 @@ public class User {
 
         User user = (User) o;
 
-        if (!Objects.equals(id, user.id)) return false;
-        return Objects.equals(email, user.email);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
