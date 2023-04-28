@@ -16,7 +16,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-group-edit',
   standalone: true,
-  imports: [CommonModule, MatInputModule, FormsModule, MatButtonModule, RouterLink, MatDatepickerModule, MatIconModule, MatNativeDateModule, MatTooltipModule],
+  imports: [
+    CommonModule, MatInputModule, FormsModule, MatButtonModule, RouterLink,
+    MatDatepickerModule, MatIconModule, MatNativeDateModule, MatTooltipModule
+  ],
   templateUrl: './group-edit.component.html',
   styleUrls: ['./group-edit.component.css']
 })

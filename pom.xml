@@ -18,6 +18,7 @@
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
         <node.version>v18.16.0</node.version>
         <npm.version>9.6.5</npm.version>
+        <spring-security.version>6.1.0-SNAPSHOT</spring-security.version>
     </properties>
     <dependencies>
         <dependency>
@@ -66,6 +67,14 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -145,10 +154,7 @@
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
-                                    <arguments>test</arguments>
-                                    <environmentVariables>
-                                        <CI>true</CI>
-                                    </environmentVariables>
+                                    <arguments>test -- --watch=false</arguments>
                                 </configuration>
                             </execution>
                             <execution>

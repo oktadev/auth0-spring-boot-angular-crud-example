@@ -3,6 +3,7 @@ package com.okta.developer.jugtours.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -110,12 +111,12 @@ public class Group {
 
         Group group = (Group) o;
 
-        return id.equals(group.id);
+        return Objects.equals(id, group.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
@@ -129,6 +130,7 @@ public class Group {
             ", country='" + country + '\'' +
             ", postalCode='" + postalCode + '\'' +
             ", user=" + user +
+            ", events=" + events +
             '}';
     }
 }

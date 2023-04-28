@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -76,12 +77,12 @@ public class Event {
 
         Event event = (Event) o;
 
-        return id.equals(event.id);
+        return Objects.equals(id, event.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
@@ -90,7 +91,7 @@ public class Event {
             "id=" + id +
             ", date=" + date +
             ", title='" + title + '\'' +
-            ", description='" + description + '\'' +
+            ", description='" + description +
             '}';
     }
 }

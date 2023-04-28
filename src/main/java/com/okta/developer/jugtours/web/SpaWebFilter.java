@@ -14,7 +14,8 @@ public class SpaWebFilter extends OncePerRequestFilter {
      * Forwards any unmapped paths (except those containing a period) to the client {@code index.html}.
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
         if (!path.startsWith("/api") &&
             !path.startsWith("/login") &&
