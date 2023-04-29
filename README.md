@@ -18,19 +18,7 @@ git clone https://github.com/oktadev/auth0-spring-boot-angular-crud-example.git 
 cd jugtours
 ```
 
-This will get a copy of the project installed locally. To install all of its dependencies and start each app, follow the instructions below.
-
-To run the server, run:
-
-```bash
-mvn spring-boot:run
-```
-
-To run the client, cd into the `app` folder and run:
-
-```bash
-npm i && npm start
-```
+This will get a copy of the project installed locally. You'll need to configure the application with a registered OIDC app for it to start. Luckily, Auth0 makes this easy!
 
 ### Use Auth0 for OpenID Connect
 
