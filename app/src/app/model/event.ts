@@ -1,11 +1,11 @@
 export class Event {
-  id: number;
-  date: Date;
+  id: number | null;
+  date: Date | null;
   title: string;
 
-  constructor(obj?: any) {
-    this.id = obj?.id || null;
-    this.date = obj?.date || null;
-    this.title = obj?.title || null;
+  constructor(event: Partial<Event> = {}) {
+    this.id = event?.id || null;
+    this.date = event?.date || null;
+    this.title = event?.title || '';
   }
 }

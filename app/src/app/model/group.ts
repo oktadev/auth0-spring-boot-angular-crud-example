@@ -1,13 +1,13 @@
 import { Event } from './event';
 
 export class Group {
-  id: number;
+  id: number | null;
   name: string;
   events: Event[];
 
-  constructor(obj?: any) {
-    this.id = obj?.id || null;
-    this.name = obj?.name || null;
-    this.events = obj?.events || null;
+  constructor(group: Partial<Group> = {}) {
+    this.id = group?.id || null;
+    this.name = group?.name || '';
+    this.events = group?.events || [];
   }
 }
