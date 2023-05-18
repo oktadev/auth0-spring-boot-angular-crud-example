@@ -29,10 +29,10 @@ Next, run `auth0 apps create`:
 ```shell
 auth0 apps create \
   --name "Bootiful Angular" \
-  --description "So Bootiful" \
+  --description "Spring Boot + Angular = ❤️" \
   --type regular \
-  --callbacks http://localhost:8080/login/oauth2/code/okta \
-  --logout-urls http://localhost:8080 \
+  --callbacks http://localhost:8080/login/oauth2/code/okta,http://localhost:4200/login/oauth2/code/okta \
+  --logout-urls http://localhost:8080,http://localhost:4200 \
   --reveal-secrets
 ```
 
