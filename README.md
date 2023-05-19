@@ -2,6 +2,8 @@
 
 This example app shows how to create a Spring Boot API and CRUD (create, read, update, and delete) its data with a beautiful Angular + Angular Material app.
 
+Please read [Build a Beautiful CRUD App with Spring Boot and Angular](https://auth0.com/blog/spring-boot-angular-crud) to see how it was created.
+
 **Prerequisites:** [Java 17](http://sdkman.io) and [Node.js 18+](https://nodejs.org/)
 
 * [Getting Started](#getting-started)
@@ -72,7 +74,7 @@ This example uses the following open source libraries:
 
 ## Help
 
-Please post any questions as comments on the [blog post](...), or visit our [Auth0 Community Forums](https://community.auth0.com/).
+Please post any questions as comments on the [blog post](https://auth0.com/blog/spring-boot-angular-crud), or visit our [Auth0 Community Forums](https://community.auth0.com/).
 
 ## License
 
