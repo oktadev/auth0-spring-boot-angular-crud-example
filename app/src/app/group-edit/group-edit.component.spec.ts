@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupEditComponent } from './group-edit.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GroupEditComponent', () => {
   let component: GroupEditComponent;
@@ -8,7 +10,7 @@ describe('GroupEditComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [GroupEditComponent]
+      imports: [GroupEditComponent, HttpClientTestingModule, RouterTestingModule]
     });
     fixture = TestBed.createComponent(GroupEditComponent);
     component = fixture.componentInstance;

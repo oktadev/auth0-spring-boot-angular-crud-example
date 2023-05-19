@@ -1,0 +1,37 @@
+name: JUG Tours CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+      - name: Run tests
+        run: xvfb-run mvn verify -ntp -Pprod
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          start: mvn spring-boot:run -Pprod -ntp -f ../pom.xml
+          install: false
+          wait-on: http://[::1]:8080
+          wait-on-timeout: 120
+          config: baseUrl=http://localhost:8080
+          working-directory: app
+        env:
+          OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
+          OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
+          OKTA_OAUTH2_CLIENT_SECRET: ${{ secrets.OKTA_OAUTH2_CLIENT_SECRET }}
+          CYPRESS_E2E_DOMAIN: ${{ secrets.CYPRESS_E2E_DOMAIN }}
+          CYPRESS_E2E_USERNAME: ${{ secrets.CYPRESS_E2E_USERNAME }}
+          CYPRESS_E2E_PASSWORD: ${{ secrets.CYPRESS_E2E_PASSWORD }}
+
