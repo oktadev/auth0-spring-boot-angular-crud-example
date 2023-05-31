@@ -397,7 +397,7 @@ public class User {
 ----
 ====
 
-. Create a `GroupRepository.java` to manage the group entity. [`sba-group-repo`]
+. Create a `GroupRepository.java` interface to manage the group entity. [`sba-group-repo`]
 +
 .`GroupRepository.java`
 [%collapsible]
@@ -565,6 +565,8 @@ ng add @angular/material
 ----
 +
 You'll be prompted to choose a theme, set up typography styles, and include animations. Select the defaults.
+
+. Start the app with `npm start` and open `http://localhost:4200`.
 
 . Modify `app/src/app/app.component.html` and move the CSS at the top to `app.component.css`:
 +
@@ -873,7 +875,7 @@ export class AppComponent {
 }
 ----
 
-. Add a route for the `HomeComponent` and `GroupListComponent` to `app-routing.module.ts`:
+. Add a route for the `HomeComponent` and `GroupListComponent` to `app-routing.module.ts`: [`sba-routes`]
 +
 [source,typescript]
 ----
@@ -1272,7 +1274,7 @@ I love building simple CRUD apps to learn a new tech stack, but I think it's eve
 
 Spring Security added support for OpenID Connect (OIDC) in version 5.0, circa 2017. This is awesome because it means you can use Spring Security to secure your app with a third-party identity provider (IdP) like Auth0.
 
-. Add the Okta Spring Boot starter to do OIDC authentication in your `pom.xml`. This will also add Spring Security to your app.
+. Add the Okta Spring Boot starter to do OIDC authentication in your `pom.xml`. This will also add Spring Security to your app. [`okta-maven-boot`]
 +
 [source,xml]
 ----
@@ -1797,7 +1799,7 @@ spring.profiles.active=@spring.profiles.active@
 +
 If you start at the root, everything will work fine since Angular will handle routing. However, if you refresh the page when you're at `http://localhost:8080/groups`, you'll get a 404 error since Spring Boot doesn't have a route for `/groups`.
 
-. To fix this, add a `SpaWebFilter` that conditionally forwards to the Angular app. [`sba-spafilter`]
+. To fix this, add a `SpaWebFilter` that conditionally forwards to the Angular app. [`sba-filter`]
 +
 .`SpaWebFilter.java`
 [%collapsible]
@@ -1875,6 +1877,7 @@ mvn spring-boot:run -Pprod
 +
 [source,shell]
 ----
+source .okta.env
 cd app
 npx cypress run --browser electron --config baseUrl=http://localhost:8080
 ----
