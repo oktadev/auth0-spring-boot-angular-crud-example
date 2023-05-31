@@ -34,7 +34,7 @@ The brackets at the end of some steps indicate the IntelliJ Live Templates to us
 You can also expand the file names to see the full code.
 ====
 
-**Fast Track**: https://github.com/oktadev/auth0-spring-boot-angular-crud-example[Clone the repo] and follow the instructions in its `README` to configure everything.
+**Fast Track**: https://github.com/oktadev/auth0-spring-boot-angular-crud-example[Clone the repo] and follow the instructions in its `README` to configure everything. _Show it running_.
 
 == Create a Java REST API with Spring Boot
 
@@ -61,8 +61,11 @@ https start.spring.io/starter.zip type==maven-project bootVersion==3.1.0 \
 
 === Add a JPA domain model
 
-. Open the jugtours project in your favorite IDE. Create a `src/main/java/com/okta/developer/jugtours/model` directory and a `Group.java` class in it.
+. Open the jugtours project in your favorite IDE. Create a `src/main/java/com/okta/developer/jugtours/model` directory and a `Group.java` class in it. [`sba-group`]
 +
+.`Group.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.model;
@@ -70,6 +73,7 @@ package com.okta.developer.jugtours.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -88,24 +92,126 @@ public class Group {
     private String postalCode;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Event> events;
 
-    // JPA requires a default constructor
     public Group() {}
 
     public Group(String name) {
         this.name = name;
     }
 
-    // getters and setters, equals, hashcode, and toString omitted for brevity
-    // Why not Lombok? See https://twitter.com/mariofusco/status/1650439733212766208
-    // Want Lombok anyway? See https://bit.ly/3HkaYMm and revert
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStateOrProvince() {
+        return stateOrProvince;
+    }
+
+    public void setStateOrProvince(String stateOrProvince) {
+        this.stateOrProvince = stateOrProvince;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Group group = (Group) o;
+
+        return Objects.equals(id, group.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", address='" + address + '\'' +
+            ", city='" + city + '\'' +
+            ", stateOrProvince='" + stateOrProvince + '\'' +
+            ", country='" + country + '\'' +
+            ", postalCode='" + postalCode + '\'' +
+            ", user=" + user +
+            ", events=" + events +
+            '}';
+    }
 }
 ----
+====
 
-. Create an `Event.java` class in the same package.
+. Create an `Event.java` class in the same package. [`sba-event`]
 +
+.`.Event.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.model;
@@ -116,6 +222,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -139,12 +246,79 @@ public class Event {
         this.description = description;
     }
 
-    // you can generate the getters and setters using your IDE!
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<User> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<User> attendees) {
+        this.attendees = attendees;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        return Objects.equals(id, event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+            "id=" + id +
+            ", date=" + date +
+            ", title='" + title + '\'' +
+            ", description='" + description +
+            '}';
+    }
 }
 ----
+====
 
-. And a `User.java` class.
+. And a `User.java` class. [`sba-user`]
 +
+.`User.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.model;
@@ -172,12 +346,62 @@ public class User {
         this.email = email;
     }
 
-    // getters and setters omitted for brevity
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            '}';
+    }
 }
 ----
+====
 
-. Create a `GroupRepository.java` to manage the group entity.
+. Create a `GroupRepository.java` to manage the group entity. [`sba-group-repo`]
 +
+.`GroupRepository.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.model;
@@ -190,9 +414,13 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     Group findByName(String name);
 }
 ----
+====
 
-. To load some default data, create an `Initializer.java` class in the `com.okta.developer.jugtours` package.
+. To load some default data, create an `Initializer.java` class in the `com.okta.developer.jugtours` package. [`sba-init`]
 +
+.`Initializer.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours;
@@ -232,11 +460,15 @@ class Initializer implements CommandLineRunner {
     }
 }
 ----
+====
 
 . Start your app with `mvn spring-boot:run`, and you should see groups and events being created.
 
-. Add a `GroupController.java` class (in `src/main/java/.../jugtours/web`) that allows you to CRUD groups.
+. Add a `GroupController.java` class (in `src/main/java/.../jugtours/web`) that allows you to CRUD groups. [`sba-group-controller`]
 +
+.`GroupController.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.web;
@@ -299,6 +531,7 @@ class GroupController {
     }
 }
 ----
+====
 
 . Restart the app, hit `http://localhost:8080/api/groups` with HTTPie, and you should see the list of groups.
 +
@@ -353,8 +586,11 @@ todo: verify this is still needed
 
 === Call your Spring Boot API and display the results
 
-. Update `app.component.ts` to fetch the list of groups when it loads.
+. Update `app.component.ts` to fetch the list of groups when it loads. [`sba-app`]
 +
+.`app.component.ts`
+[%collapsible]
+====
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
@@ -383,8 +619,9 @@ export class AppComponent implements OnInit {
   }
 }
 ----
+====
 
-. Before this compiles, you'll need to create a `app/src/app/model/group.ts` file:
+. Before this compiles, you'll need to create a `app/src/app/model/group.ts` file: [`sba-group-ts`]
 +
 [source,typescript]
 ----
@@ -416,7 +653,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppModule { }
 ----
 
-. Modify the `app.component.html` file to display the list of groups.
+. Modify the `app.component.html` file to display the list of groups. [`sba-app-html`]
 +
 [source,html]
 ----
@@ -433,7 +670,7 @@ export class AppModule { }
 </div>
 ----
 
-. Create a file called `proxy.conf.js` in the `src` folder of your Angular project and use it to define your proxies:
+. Create a file called `proxy.conf.js` in the `src` folder of your Angular project and use it to define your proxies: [`sba-proxy`]
 +
 [source,js]
 ----
@@ -479,8 +716,11 @@ module.exports = PROXY_CONFIG;
 ng g c group-list --standalone
 ----
 
-. Replace the code in `group-list.component.ts` with the following:
+. Replace the code in `group-list.component.ts`: [`sba-group-list`]
 +
+.`group-list.component.ts`
+[%collapsible]
+====
 [source,typescript]
 ----
 import { Component } from '@angular/core';
@@ -537,9 +777,13 @@ export class GroupListComponent {
   protected readonly event = event;
 }
 ----
+====
 
-. Update its HTML template to use Angular Material's table component.
+. Update its HTML template to use Angular Material's table component. [`sba-group-list-html`]
 +
+.`group-list.component.html`
+[%collapsible]
+====
 [source,html]
 ----
 <nav aria-label="breadcrumb">
@@ -588,6 +832,7 @@ export class GroupListComponent {
   </table>
 </ng-template>
 ----
+====
 
 . Create a `HomeComponent` to display a welcome message and a link to the groups page. This component will be the default route for the app.
 +
@@ -648,8 +893,11 @@ export const routes: Routes = [
 ];
 ----
 
-. Update the CSS in `styles.css` to have rules for the `breadcrumb` and `alert` classes:
+. Update the CSS in `styles.css` to have rules for the `breadcrumb` and `alert` classes: [`sba-css`]
 +
+.`styles.css`
+[%collapsible]
+====
 [source,css]
 ----
 /* https://careydevelopment.us/blog/angular-how-to-add-breadcrumbs-to-your-ui */
@@ -708,6 +956,7 @@ ol.breadcrumb li {
   border-color: #f5c6cb;
 }
 ----
+====
 
 . Run `npm start` in your `app` directory to see how everything looks. Click on Manage JUG Tour, and you should see a list of the default groups.
 
@@ -748,8 +997,11 @@ export const routes: Routes = [
 ];
 ----
 
-. Replace the code in `group-edit.component.ts` with the following:
+. Replace the code in `group-edit.component.ts`: [`sba-group-edit`]
 +
+.`group-edit.component.ts`
+[%collapsible]
+====
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
@@ -835,8 +1087,9 @@ export class GroupEditComponent implements OnInit {
   }
 }
 ----
+====
 
-. Create a `model/event.ts` file so this component will compile.
+. Create a `model/event.ts` file so this component will compile. [`sba-event-ts`]
 +
 [source,typescript]
 ----
@@ -872,8 +1125,11 @@ export class Group {
 }
 ----
 
-. The `GroupEditComponent` needs to render a form, so update `group-edit.component.html` with the following:
+. The `GroupEditComponent` needs to render a form, so update `group-edit.component.html`: [`sba-group-edit-html`]
 +
+.`group-edit.component.html`
+[%collapsible]
+====
 [source,html]
 ----
 <nav aria-label="breadcrumb">
@@ -923,10 +1179,11 @@ export class Group {
   </div>
 </form>
 ----
+====
 +
 If you look closely, you'll notice this component allows you to edit events for a group.
 
-. Update `group-edit.component.css` to make things look better on all devices:
+. Update `group-edit.component.css` to make things look better on all devices: [`sba-group-edit-css`]
 +
 [source,css]
 ----
@@ -949,8 +1206,11 @@ form, h2 {
 +
 Now, with your Angular app running, you should be able to add and edit groups!
 
-. To make the navbar at the top use Angular Material colors, update `app.component.html`:
+. To make the navbar at the top use Angular Material colors, update `app.component.html`: [`sba-toolbar`]
 +
+.`app.component.html`
+[%collapsible]
+====
 [source,html]
 ----
 <mat-toolbar role="banner" color="primary" class="toolbar">
@@ -979,6 +1239,7 @@ Now, with your Angular app running, you should be able to add and edit groups!
   </a>
 </mat-toolbar>
 ----
+====
 
 . Since this is not a standalone component, you must import `MatToolbarModule` in `app.module.ts`.
 +
@@ -1018,7 +1279,7 @@ Spring Security added support for OpenID Connect (OIDC) in version 5.0, circa 20
 <dependency>
     <groupId>com.okta.spring</groupId>
     <artifactId>okta-spring-boot-starter</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
 </dependency>
 ----
 
@@ -1074,8 +1335,11 @@ source .okta.env
 
 === Configure Spring Security for maximum protection
 
-. To make Spring Security Angular-friendly, create a `SecurityConfiguration.java` file in `src/main/java/.../jugtours/config`.
+. To make Spring Security Angular-friendly, create a `SecurityConfiguration.java` file in `src/main/java/.../jugtours/config`. [`sba-security-config`]
 +
+.`SecurityConfiguration.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.config;
@@ -1110,9 +1374,13 @@ public class SecurityConfiguration {
     }
 }
 ----
+====
 
-. You'll need to create the `CookieCsrfFilter` class that's added because Spring Security 6 no longer sets the cookie for you. Create it in the `web` package.
+. You'll need to create the `CookieCsrfFilter` class that's added because Spring Security 6 no longer sets the cookie for you. Create it in the `web` package. [`sba-csrf`]
 +
+.`CookieCsrfFilter.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.web;
@@ -1146,9 +1414,13 @@ public class CookieCsrfFilter extends OncePerRequestFilter {
     }
 }
 ----
+====
 
-. Create `src/main/java/.../jugtours/web/UserController.java`. Angular will use this API to 1) find out if a user is authenticated and 2) perform global logout.
+. Create `src/main/java/.../jugtours/web/UserController.java`. Angular will use this API to 1) find out if a user is authenticated and 2) perform global logout. [`sba-user-controller`]
 +
+.`UserController.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.web;
@@ -1200,8 +1472,9 @@ public class UserController {
     }
 }
 ----
+====
 
-. You'll also want to add user information when creating groups so that you can filter by your JUG tour. Add a `UserRepository.java` in the same directory as `GroupRepository.java`.
+. You'll also want to add user information when creating groups so that you can filter by your JUG tour. Add a `UserRepository.java` in the same directory as `GroupRepository.java`. [`sba-user-repo`]
 +
 [source,java]
 ----
@@ -1224,28 +1497,6 @@ List<Group> findAllByUserId(String id);
 +
 [source,java]
 ----
-package com.okta.developer.jugtours.web;
-
-import com.okta.developer.jugtours.model.Group;
-import com.okta.developer.jugtours.model.GroupRepository;
-import com.okta.developer.jugtours.model.User;
-import com.okta.developer.jugtours.model.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api")
 class GroupController {
@@ -1264,12 +1515,7 @@ class GroupController {
         return groupRepository.findAllByUserId(principal.getName());
     }
 
-    @GetMapping("/group/{id}")
-    ResponseEntity<?> getGroup(@PathVariable Long id) {
-        Optional<Group> group = groupRepository.findById(id);
-        return group.map(response -> ResponseEntity.ok().body(response))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    ...
 
     @PostMapping("/group")
     ResponseEntity<Group> createGroup(@Valid @RequestBody Group group,
@@ -1288,19 +1534,7 @@ class GroupController {
             .body(result);
     }
 
-    @PutMapping("/group/{id}")
-    ResponseEntity<Group> updateGroup(@Valid @RequestBody Group group) {
-        log.info("Request to update group: {}", group);
-        Group result = groupRepository.save(group);
-        return ResponseEntity.ok().body(result);
-    }
-
-    @DeleteMapping("/group/{id}")
-    public ResponseEntity<?> deleteGroup(@PathVariable Long id) {
-        log.info("Request to delete group: {}", id);
-        groupRepository.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
+    ...
 }
 ----
 
@@ -1312,8 +1546,11 @@ Angular's `HttpClient` supports the client-side half of the CSRF protection. It'
 
 === Update your Angular app's authentication mechanism
 
-. Create a new `AuthService` class to communicate with your Spring Boot API for authentication information. Add the following code to a new file at `app/src/app/auth.service.ts`.
+. Create a new `AuthService` class to communicate with your Spring Boot API for authentication information. Add the following code to a new file at `app/src/app/auth.service.ts`. [`sba-auth-service`]
 +
+.`auth.service.ts`
+[%collapsible]
+====
 [source,typescript]
 ----
 import { Injectable } from '@angular/core';
@@ -1361,8 +1598,9 @@ export class AuthService {
   }
 }
 ----
+====
 
-. Add the referenced `User` class to `app/src/app/model/user.ts`.
+. Add the referenced `User` class to `app/src/app/model/user.ts`. [`sba-user-ts`]
 +
 [source,typescript]
 ----
@@ -1372,8 +1610,11 @@ export class User {
 }
 ----
 
-. Modify `home.component.ts` to use `AuthService` to see if the user is logged in.
+. Modify `home.component.ts` to use `AuthService` to see if the user is logged in. [`sba-home`]
 +
+.`home.component.ts`
+[%collapsible]
+====
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
@@ -1404,8 +1645,9 @@ export class HomeComponent implements OnInit {
 
 }
 ----
+====
 
-. Modify `home.component.html` to show the Login button if the user is not logged in. Otherwise, show a Logout button.
+. Modify `home.component.html` to show the Login button if the user is not logged in. Otherwise, show a Logout button. [`sba-home-html`]
 +
 [source,html]
 ----
@@ -1437,8 +1679,11 @@ After all these changes, you should be able to restart both Spring Boot and Angu
 
 == Configure Maven to Package Angular with Spring Boot
 
-. To build and package your React app with Maven, you can use the frontend-maven-plugin and Maven's profiles to activate it. Add properties for versions and a `<profiles>` section to your `pom.xml`.
+. To build and package your React app with Maven, you can use the frontend-maven-plugin and Maven's profiles to activate it. Add properties for versions and a `<profiles>` section to your `pom.xml`. [`sba-properties` and `sba-profiles`]
 +
+.`pom.xml`
+[%collapsible]
+====
 [source,xml]
 ----
 <properties>
@@ -1539,6 +1784,7 @@ After all these changes, you should be able to restart both Spring Boot and Angu
     </profile>
 </profiles>
 ----
+====
 
 . Add the active profile setting to `src/main/resources/application.properties`:
 +
@@ -1551,8 +1797,11 @@ spring.profiles.active=@spring.profiles.active@
 +
 If you start at the root, everything will work fine since Angular will handle routing. However, if you refresh the page when you're at `http://localhost:8080/groups`, you'll get a 404 error since Spring Boot doesn't have a route for `/groups`.
 
-. To fix this, add a `SpaWebFilter` that conditionally forwards to the Angular app.
+. To fix this, add a `SpaWebFilter` that conditionally forwards to the Angular app. [`sba-spafilter`]
 +
+.`SpaWebFilter.java`
+[%collapsible]
+====
 [source,java]
 ----
 package com.okta.developer.jugtours.web;
@@ -1587,6 +1836,7 @@ public class SpaWebFilter extends OncePerRequestFilter {
     }
 }
 ----
+====
 
 . And add to your `SecurityConfiguration.java` class:
 +
