@@ -1891,7 +1891,7 @@ export {};
 ----
 ====
 
-. Update `app/cypress/support/e2e.ts` to log in before each test, and log out after. [`sba-e2e`]
+. Update `app/cypress/support/e2e.ts` to log in before each test and log out after. [`sba-e2e`]
 +
 .`e2e.ts`
 [%collapsible]
@@ -2003,7 +2003,7 @@ npx cypress run --browser electron --config baseUrl=http://localhost:8080
 
 === Fix Unit Tests
 
-. If you run `npm test`, you'll see there's a number of failures. Fix them:
+. If you run `npm test`, you'll see several failures. Fix them:
   - Update `home.component.spec.ts` to import `HttpClientTestingModule`
   - Update `app.component.spec.ts` to import `MatToolBarModule` and look for `JUG Tours`
   - Update group components to import `HttpClientTestingModule` and `RouterTestingModule`
@@ -2017,7 +2017,7 @@ npx cypress run --browser electron --config baseUrl=http://localhost:8080
 @SpringBootTest(classes = {JugtoursApplication.class, TestSecurityConfiguration.class})
 ----
 
-. Run `mvn test` again and your tests will pass. 🎉
+. Run `mvn test` again, and your tests will pass. 🎉
 
 == Use GitHub Actions to Build and Test Your App
 
