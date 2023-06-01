@@ -1976,22 +1976,6 @@ describe('Groups', () => {
 ----
 ====
 
-. If you run `npm test`, you'll see there's a number of failures. Fix them:
-  - Update `home.component.spec.ts` to import `HttpClientTestingModule`
-  - Update `app.component.spec.ts` to import `MatToolBarModule` and look for `JUG Tours`
-  - Update group components to import `HttpClientTestingModule` and `RouterTestingModule`
-
-. Run `mvn test` without setting environment variables and your tests will fail.
-  - Add `TestSecurityConfiguration` to mock an OAuth provider [`sba-test-config`]
-  - Update `JugToursApplicationTests`:
-+
-[source,java]
-----
-@SpringBootTest(classes = {JugtoursApplication.class, TestSecurityConfiguration.class})
-----
-
-. Run `mvn test` again and your tests will pass. 🎉
-
 . Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
 +
 [source,shell]
@@ -2016,6 +2000,26 @@ source .okta.env
 cd app
 npx cypress run --browser electron --config baseUrl=http://localhost:8080
 ----
+
+=== Fix Unit Tests
+
+. If you run `npm test`, you'll see there's a number of failures. Fix them:
+  - Update `home.component.spec.ts` to import `HttpClientTestingModule`
+  - Update `app.component.spec.ts` to import `MatToolBarModule` and look for `JUG Tours`
+  - Update group components to import `HttpClientTestingModule` and `RouterTestingModule`
+
+. Run `mvn test` without setting environment variables and your tests will fail.
+  - Add `TestSecurityConfiguration` to mock an OAuth provider [`sba-test-config`]
+  - Update `JugToursApplicationTests`:
++
+[source,java]
+----
+@SpringBootTest(classes = {JugtoursApplication.class, TestSecurityConfiguration.class})
+----
+
+. Run `mvn test` again and your tests will pass. 🎉
+
+== Use GitHub Actions to Build and Test Your App
 
 . Add a GitHub workflow at `.github/workflows/main.yml` to prove that your tests run in CI. [`sba-ci`]
 +
@@ -2071,7 +2075,7 @@ jobs:
 
 . Add environment variables for the above secrets to your GitHub repository at *Settings* > *Secrets and variables* > *Actions* > *New Repository Secret*.
 
-. Push your changes to GitHub and watch the CI workflow run. ✅
+. Push your changes to GitHub and watch the https://github.com/oktadev/auth0-spring-boot-angular-crud-example/actions/workflows/main.yml[main workflow] run. ✅
 
 == Build Something Fabulous with Spring Boot and Angular!
 
