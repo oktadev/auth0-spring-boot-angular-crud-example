@@ -28,7 +28,6 @@ public class TestSecurityConfiguration {
     }
 
     @Bean
-
     ClientRegistrationRepository clientRegistrationRepository(ClientRegistration clientRegistration) {
         return new InMemoryClientRegistrationRepository(clientRegistration);
     }
@@ -60,7 +59,6 @@ public class TestSecurityConfiguration {
     }
 
     @Bean
-
     OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
         return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
     }
