@@ -5,7 +5,7 @@
 
 = Build a Beautiful CRUD App with Spring Boot and Angular
 
-In this demo, you'll see how to build a secure full stack CRUD app with Spring Boot and Angular. The final will result will use OAuth 2.0 and package the Angular app in the Spring Boot app for distribution as a single artifact. At the same time, I'll show you how to keep Angular's productive workflow when developing locally.
+In this demo, you'll see how to build a secure full stack CRUD app with Spring Boot and Angular. The final result will use OAuth 2.0 and package the Angular app in the Spring Boot app for distribution as a single artifact. At the same time, I'll show you how to keep Angular's productive workflow when developing locally.
 
 Features:
 
@@ -22,8 +22,7 @@ _Check the description below this video for links to the blog post and this demo
 - https://adoptium.net/[Java 17]: I recommend using https://sdkman.io/[SDKMAN!] to manage and install multiple versions of Java.
 - https://nodejs.org/[Node 18]: I recommend using https://github.com/nvm-sh/nvm[Node Version Manager] to manage multiple versions of Node.
 - https://httpie.io/cli[HTTPie]
-- https://github.com/auth0/auth0-cli#installation[Auth0 CLI]
-- https://auth0.com/signup[An Auth0 account]
+- https://github.com/auth0/auth0-cli#installation[Auth0 CLI] and https://auth0.com/signup[an Auth0 account]
 
 toc::[]
 
@@ -1183,7 +1182,7 @@ export class Group {
 ----
 ====
 +
-If you look closely, you'll notice this component allows you to edit events for a group.
+If you look closely, you'll notice this component allows you to edit events for a group. ✨
 
 . Update `group-edit.component.css` to make things look better on all devices: [`sba-group-edit-css`]
 +
@@ -1503,8 +1502,7 @@ List<Group> findAllByUserId(String id);
 @RequestMapping("/api")
 class GroupController {
 
-    private final Logger log = LoggerFactory.getLogger(GroupController.class);
-    private final GroupRepository groupRepository;
+    ...
     private final UserRepository userRepository;
 
     public GroupController(GroupRepository groupRepository, UserRepository userRepository) {
@@ -1855,7 +1853,144 @@ Now, if you restart and reload the page, everything will work as expected. 🤩
 
     ng add @cypress/schematic
 
-. Look at https://github.com/oktadev/auth0-spring-boot-angular-crud-example/pull/1[this pull request] to see the changes required for adding end-to-end tests, fixing existing unit tests, and adding CI.
+. Update `app/cypress/support/commands.ts` to add a `login(username, password)` method: [`sba-commands`]
++
+.`commands.ts`
+[%collapsible]
+====
+[source,ts]
+----
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+// eslint-disable-next-line spaced-comment
+/// <reference types="cypress" />
+
+Cypress.Commands.add('login', (username: string, password: string) => {
+  Cypress.log({
+    message: [`🔐 Authenticating: ${username}`],
+    autoEnd: false,
+  })
+  cy.origin(Cypress.env('E2E_DOMAIN'), {args: {username, password}},
+    ({username, password}) => {
+      cy.get('input[name=username]').type(username);
+      cy.get('input[name=password]').type(`${password}{enter}`, {log: false});
+    }
+  );
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      login(username: string, password: string): Cypress.Chainable;
+    }
+  }
+}
+
+// Convert this to a module instead of script (allows import/export)
+export {};
+----
+====
+
+. Update `app/cypress/support/e2e.ts` to log in before each test, and log out after. [`sba-e2e`]
++
+.`e2e.ts`
+[%collapsible]
+====
+[source,ts]
+----
+import './commands';
+
+beforeEach(() => {
+  if (Cypress.env('E2E_USERNAME') === undefined) {
+    console.error('E2E_USERNAME is not defined');
+    alert('E2E_USERNAME is not defined');
+    return;
+  }
+  cy.visit('/')
+  cy.get('#login').click()
+  cy.login(
+    Cypress.env('E2E_USERNAME'),
+    Cypress.env('E2E_PASSWORD')
+  )
+})
+
+afterEach(() => {
+  cy.visit('/')
+  cy.get('#logout').click()
+})
+----
+====
+
+. Add a `app/cypress/e2e/home.cy.ts` test to verify that the home page loads. [`sba-e2e-home`]
++
+[source,ts]
+----
+describe('Home', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  });
+
+  it('Visits the initial app page', () => {
+    cy.contains('JUG Tours')
+    cy.contains('Logout')
+  })
+})
+----
+
+. Create a `groups.cy.ts` in the same directory to test CRUD on groups. [`sb-e2e-groups`]
++
+.`groups.cy.ts`
+[%collapsible]
+====
+[source,ts]
+----
+describe('Groups', () => {
+
+  beforeEach(() => {
+    cy.visit('/groups')
+  });
+
+  it('add button should exist', () => {
+    cy.get('#add').should('exist');
+  });
+
+  it('should add a new group', () => {
+    cy.get('#add').click();
+    cy.get('#name').type('Test Group');
+    cy.get('#save').click();
+    cy.get('.alert-success').should('exist');
+  });
+
+  it('should edit a group', () => {
+    cy.get('a').last().click();
+    cy.get('#name').should('have.value', 'Test Group');
+    cy.get('#cancel').click();
+  });
+
+  it('should delete a group', () => {
+    cy.get('button').last().click();
+    cy.on('window:confirm', () => true);
+    cy.get('.alert-success').should('exist');
+  });
+});
+----
+====
+
+. If you run `npm test`, you'll see there's a number of failures. Fix them:
+  - Update `home.component.spec.ts` to import `HttpClientTestingModule`
+  - Update `app.component.spec.ts` to import `MatToolBarModule` and look for `JUG Tours`
+  - Update group components to import `HttpClientTestingModule` and `RouterTestingModule`
+
+. Run `mvn test` without setting environment variables and your tests will fail.
+  - Add `TestSecurityConfiguration` to mock an OAuth provider [`sba-test-config`]
+  - Update `JugToursApplicationTests`:
++
+[source,java]
+----
+@SpringBootTest(classes = {JugtoursApplication.class, TestSecurityConfiguration.class})
+----
+
+. Run `mvn test` again and your tests will pass. 🎉
 
 . Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
 +
@@ -1881,6 +2016,62 @@ source .okta.env
 cd app
 npx cypress run --browser electron --config baseUrl=http://localhost:8080
 ----
+
+. Add a GitHub workflow at `.github/workflows/main.yml` to prove that your tests run in CI. [`sba-ci`]
++
+.`main.yml`
+[%collapsible]
+====
+[source,yaml]
+----
+name: JUG Tours CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+      - name: Run tests
+        run: xvfb-run mvn verify -ntp -Pprod
+      - name: Run e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          start: mvn spring-boot:run -Pprod -ntp -f ../pom.xml
+          install: false
+          wait-on: http://[::1]:8080
+          wait-on-timeout: 120
+          config: baseUrl=http://localhost:8080
+          working-directory: app
+        env:
+          OKTA_OAUTH2_ISSUER: ${{ secrets.OKTA_OAUTH2_ISSUER }}
+          OKTA_OAUTH2_CLIENT_ID: ${{ secrets.OKTA_OAUTH2_CLIENT_ID }}
+          OKTA_OAUTH2_CLIENT_SECRET: ${{ secrets.OKTA_OAUTH2_CLIENT_SECRET }}
+          CYPRESS_E2E_DOMAIN: ${{ secrets.CYPRESS_E2E_DOMAIN }}
+          CYPRESS_E2E_USERNAME: ${{ secrets.CYPRESS_E2E_USERNAME }}
+          CYPRESS_E2E_PASSWORD: ${{ secrets.CYPRESS_E2E_PASSWORD }}
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: app/cypress/screenshots
+----
+====
+
+. Add environment variables for the above secrets to your GitHub repository at *Settings* > *Secrets and variables* > *Actions* > *New Repository Secret*.
+
+. Push your changes to GitHub and watch the CI workflow run. ✅
 
 == Build Something Fabulous with Spring Boot and Angular!
 
