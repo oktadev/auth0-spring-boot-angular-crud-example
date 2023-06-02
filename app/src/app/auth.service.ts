@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   getUser(): Observable<User> {
-    return this.http.get<User>('/api/user', {headers}, )
+    return this.http.get<User>('/api/user', { headers },)
       .pipe(map((response: User) => {
           if (response !== null) {
             this.$authenticationState.next(true);

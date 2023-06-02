@@ -18,7 +18,7 @@ export class GroupListComponent {
   title = 'Group List';
   loading = true;
   groups: Group[] = [];
-  displayedColumns = ['id','name','events','actions'];
+  displayedColumns = ['id', 'name', 'events', 'actions'];
   feedback: any = {};
 
   constructor(private http: HttpClient) {
