@@ -580,11 +580,6 @@ You'll be prompted to choose a theme, set up typography styles, and include anim
 </div>
 ----
 
-////
-todo: verify this is still needed
-**TIP**: Copy and paste from the [final `app.component.css`](https://github.com/oktadev/auth0-spring-boot-angular-crud-example/blob/main/app/src/app/app.component.css) to yours if you want your app to match the screenshots in this tutorial.
-////
-
 === Call your Spring Boot API and display the results
 
 . Update `app.component.ts` to fetch the list of groups when it loads. [`sba-app`]
