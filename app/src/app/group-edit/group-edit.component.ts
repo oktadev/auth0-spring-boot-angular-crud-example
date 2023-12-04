@@ -61,7 +61,7 @@ export class GroupEditComponent implements OnInit {
     const id = this.group.id;
     const method = id ? 'put' : 'post';
 
-    this.http[method]<Group>(`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
+    this.http[method](`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
       next: () => {
         this.feedback = {type: 'success', message: 'Save was successful!'};
         setTimeout(async () => {

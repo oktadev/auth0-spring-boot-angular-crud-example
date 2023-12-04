@@ -21,7 +21,7 @@
       <mat-label>Name</mat-label>
       <input matInput [(ngModel)]="group.name" id="name" name="name" placeholder="Name" required>
     </mat-form-field>
-    @if (group.events?.length) {
+    @if (group.events.length) {
       <h3>Events</h3>
     }
     @for (event of group.events; track event; let i = $index) {
@@ -54,4 +54,3 @@
       </div>
     </form>
   }
-  
