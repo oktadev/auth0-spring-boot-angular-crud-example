@@ -1,10 +1,11 @@
-<div *ngIf="user; else login">
-  <h2>Welcome, {{ user.name }}!</h2>
-  <a mat-button color="primary" routerLink="/groups">Manage JUG Tour</a>
-  <br/><br/>
-  <button mat-raised-button color="primary" (click)="auth.logout()" id="logout">Logout</button>
-</div>
-<ng-template #login>
+@if (user) {
+  <div>
+    <h2>Welcome, {{ user.name }}!</h2>
+    <a mat-button color="primary" routerLink="/groups">Manage JUG Tour</a>
+    <br/><br/>
+    <button mat-raised-button color="primary" (click)="auth.logout()" id="logout">Logout</button>
+  </div>
+} @else {
   <p>Please log in to manage your JUG Tour.</p>
   <button mat-raised-button color="primary" (click)="auth.login()" id="login">Login</button>
-</ng-template>
+}

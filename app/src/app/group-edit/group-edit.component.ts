@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map, of, switchMap } from 'rxjs';
 import { Group } from '../model/group';
@@ -17,9 +17,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-group-edit',
   standalone: true,
   imports: [
-    CommonModule, MatInputModule, FormsModule, MatButtonModule, RouterLink,
-    MatDatepickerModule, MatIconModule, MatNativeDateModule, MatTooltipModule
-  ],
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    RouterLink,
+    MatDatepickerModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatTooltipModule
+],
   templateUrl: './group-edit.component.html',
   styleUrls: ['./group-edit.component.css']
 })

@@ -5,42 +5,53 @@
     <li class="breadcrumb-item active">Edit Group</li>
   </ol>
 </nav>
-
 <h2>Group Information</h2>
-<div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
-<form *ngIf="group" #editForm="ngForm" (ngSubmit)="save()">
-  <mat-form-field class="full-width" *ngIf="group.id">
-    <mat-label>ID</mat-label>
-    <input matInput [(ngModel)]="group.id" id="id" name="id" placeholder="ID" readonly>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="group.name" id="name" name="name" placeholder="Name" required>
-  </mat-form-field>
-  <h3 *ngIf="group.events?.length">Events</h3>
-  <div *ngFor="let event of group.events; index as i" class="full-width">
-    <mat-form-field style="width: 35%">
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker"
-             [(ngModel)]="group.events[i].date" name="group.events[{{i}}].date" placeholder="Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+@if (feedback.message) {
+  <div class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+}
+@if (group) {
+  <form #editForm="ngForm" (ngSubmit)="save()">
+    @if (group.id) {
+      <mat-form-field class="full-width">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="group.id" id="id" name="id" placeholder="ID" readonly>
+      </mat-form-field>
+    }
+    <mat-form-field class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="group.name" id="name" name="name" placeholder="Name" required>
     </mat-form-field>
-    <mat-form-field style="width: 65%">
-      <mat-label>Title</mat-label>
-      <input matInput [(ngModel)]="group.events[i].title" name="group.events[{{i}}].title" placeholder="Title">
-    </mat-form-field>
-    <button mat-icon-button (click)="removeEvent(i)" aria-label="Remove Event"
-            style="float: right; margin: -70px -5px 0 0">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
-
-  <div class="button-row" role="group">
-    <button type="button" mat-mini-fab color="accent" (click)="addEvent()"
-            aria-label="Add Event" *ngIf="group.id" matTooltip="Add Event"
-            style="float: right; margin-top: -4px"><mat-icon>add</mat-icon></button>
-    <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid" id="save">Save</button>
-    <button type="button" mat-button color="accent" (click)="cancel()" id="cancel">Cancel</button>
-  </div>
-</form>
+    @if (group.events?.length) {
+      <h3>Events</h3>
+    }
+    @for (event of group.events; track event; let i = $index) {
+      <div class="full-width">
+        <mat-form-field style="width: 35%">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker"
+            [(ngModel)]="group.events[i].date" name="group.events[{{i}}].date" placeholder="Date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field style="width: 65%">
+          <mat-label>Title</mat-label>
+          <input matInput [(ngModel)]="group.events[i].title" name="group.events[{{i}}].title" placeholder="Title">
+        </mat-form-field>
+        <button mat-icon-button (click)="removeEvent(i)" aria-label="Remove Event"
+          style="float: right; margin: -70px -5px 0 0">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
+    <div class="button-row" role="group">
+      @if (group.id) {
+        <button type="button" mat-mini-fab color="accent" (click)="addEvent()"
+          aria-label="Add Event" matTooltip="Add Event"
+          style="float: right; margin-top: -4px"><mat-icon>add</mat-icon></button>
+        }
+        <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid" id="save">Save</button>
+        <button type="button" mat-button color="accent" (click)="cancel()" id="cancel">Cancel</button>
+      </div>
+    </form>
+  }
+  
