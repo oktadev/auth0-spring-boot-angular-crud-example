@@ -46,11 +46,11 @@ The easiest way to create a new Spring Boot app is to navigate to https://start.
 
 Click **Generate Project**, expand `jugtours.zip` after downloading, and open the project in your favorite IDE.
 
-You can also use https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.0&packaging=jar&jvmVersion=17&groupId=com.okta.developer&artifactId=jugtours&name=jugtours&description=Track%20your%20JUG%20Tours!&packageName=com.okta.developer.jugtours&dependencies=data-jpa,h2,web,validation[this link] or HTTPie to create the project from the command line:
+You can also use https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.2.0&packaging=jar&jvmVersion=17&groupId=com.okta.developer&artifactId=jugtours&name=jugtours&description=Track%20your%20JUG%20Tours!&packageName=com.okta.developer.jugtours&dependencies=data-jpa,h2,web,validation[this link] or HTTPie to create the project from the command line:
 
 [source,shell]
 ----
-https start.spring.io/starter.zip type==maven-project bootVersion==3.1.0 \
+https start.spring.io/starter.zip type==maven-project bootVersion==3.2.0 \
   dependencies==data-jpa,h2,web,validation \
   language==java platformVersion==17 \
   name==jugtours artifactId==jugtours \
@@ -552,7 +552,7 @@ http DELETE :8080/api/group/8
 +
 [source,shell]
 ----
-npx @angular/cli@16 new app --routing --style css
+npx @angular/cli@17 new app --routing --style css --ssr false
 ----
 
 . Navigate into the `app` directory and install https://material.angular.io/[Angular Material] to make the UI look beautiful, particularly on mobile devices.
@@ -590,13 +590,14 @@ You'll be prompted to choose a theme, set up typography styles, and include anim
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Group } from './model/group';
 
 @Component({
   selector: 'app-root',
+  imports: [HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'JUG Tours';
@@ -632,36 +633,18 @@ export class Group {
 }
 ----
 
-. Add `HttpClientModule` to `app.module.ts`:
-+
-[source,typescript]
-----
-import { HttpClientModule } from '@angular/common/http';
-
-@NgModule({
-  ...
-  imports: [
-    ...
-    HttpClientModule
-  ],
-  ...
-})
-export class AppModule { }
-----
-
 . Modify the `app.component.html` file to display the list of groups. [`sba-app-html`]
 +
 [source,html]
 ----
 <div class="content" role="main">
-
   <h2>{{title}}</h2>
-  <div *ngIf="loading">
-    <p>Loading...</p>
-  </div>
-  <div *ngFor="let group of groups">
-    <div>{{group.name}}</div>
-  </div>
+@if (loading) {
+  <p>Loading...</p>
+}
+@for (group of groups; track group) {
+  <div>{{group.name}}</div>
+}
   <router-outlet></router-outlet>
 </div>
 ----
@@ -690,10 +673,10 @@ module.exports = PROXY_CONFIG;
   "builder": "@angular-devkit/build-angular:dev-server",
   "configurations": {
     "production": {
-      "browserTarget": "app:build:production"
+      "buildTarget": "app:build:production"
     },
     "development": {
-      "browserTarget": "app:build:development",
+      "buildTarget": "app:build:development",
       "proxyConfig": "src/proxy.conf.js"
     }
   },
@@ -733,7 +716,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, RouterLink, MatButtonModule, MatTableModule, MatIconModule],
   templateUrl: './group-list.component.html',
-  styleUrls: ['./group-list.component.css']
+  styleUrl: './group-list.component.css'
 })
 export class GroupListComponent {
   title = 'Group List';
@@ -792,12 +775,14 @@ export class GroupListComponent {
 <a [routerLink]="['/group/new']" mat-raised-button color="primary" style="float: right" id="add">Add Group</a>
 
 <h2>{{title}}</h2>
-<div *ngIf="loading; else list">
-  <p>Loading...</p>
-</div>
-
-<ng-template #list>
-  <div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+@if (loading) {
+  <div>
+    <p>Loading...</p>
+  </div>
+} @else {
+  @if (feedback.message) {
+    <div class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+  }
   <table mat-table [dataSource]="groups">
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
@@ -810,10 +795,10 @@ export class GroupListComponent {
     <ng-container matColumnDef="events">
       <mat-header-cell *matHeaderCellDef> Events </mat-header-cell>
       <mat-cell *matCellDef="let item">
-        <ng-container *ngFor="let event of item.events">
+        @for (event of item.events; track event) {
           {{event.date | date }}: {{ event.title }}
           <br/>
-        </ng-container>
+        }
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
@@ -826,7 +811,7 @@ export class GroupListComponent {
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </table>
-</ng-template>
+}
 ----
 ====
 
@@ -862,14 +847,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'JUG Tours';
 }
 ----
 
-. Add a route for the `HomeComponent` and `GroupListComponent` to `app-routing.module.ts`: [`sba-routes`]
+. Add a route for the `HomeComponent` and `GroupListComponent` to `app.routes.ts`: [`sba-routes`]
 +
 [source,typescript]
 ----
@@ -978,7 +963,7 @@ It's great to see your Spring Boot API's data in your Angular app, but it's no f
 ng g c group-edit --standalone
 ----
 
-. Add a route for this component to `app-routing.module.ts`:
+. Add a route for this component to `app.routes.ts`:
 +
 [source,typescript]
 ----
@@ -1001,7 +986,6 @@ export const routes: Routes = [
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map, of, switchMap } from 'rxjs';
 import { Group } from '../model/group';
@@ -1019,11 +1003,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-group-edit',
   standalone: true,
   imports: [
-    CommonModule, MatInputModule, FormsModule, MatButtonModule, RouterLink,
-    MatDatepickerModule, MatIconModule, MatNativeDateModule, MatTooltipModule
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    RouterLink,
+    MatDatepickerModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatTooltipModule
   ],
   templateUrl: './group-edit.component.html',
-  styleUrls: ['./group-edit.component.css']
+  styleUrl: './group-edit.component.css'
 })
 export class GroupEditComponent implements OnInit {
   group!: Group;
@@ -1057,7 +1047,7 @@ export class GroupEditComponent implements OnInit {
     const id = this.group.id;
     const method = id ? 'put' : 'post';
 
-    this.http[method]<Group>(`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
+    this.http[method](`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
       next: () => {
         this.feedback = {type: 'success', message: 'Save was successful!'};
         setTimeout(async () => {
@@ -1135,45 +1125,55 @@ export class Group {
     <li class="breadcrumb-item active">Edit Group</li>
   </ol>
 </nav>
-
 <h2>Group Information</h2>
-<div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
-<form *ngIf="group" #editForm="ngForm" (ngSubmit)="save()">
-  <mat-form-field class="full-width" *ngIf="group.id">
-    <mat-label>ID</mat-label>
-    <input matInput [(ngModel)]="group.id" id="id" name="id" placeholder="ID" readonly>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="group.name" id="name" name="name" placeholder="Name" required>
-  </mat-form-field>
-  <h3 *ngIf="group.events?.length">Events</h3>
-  <div *ngFor="let event of group.events; index as i" class="full-width">
-    <mat-form-field style="width: 35%">
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker"
-             [(ngModel)]="group.events[i].date" name="group.events[{{i}}].date" placeholder="Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+@if (feedback.message) {
+  <div class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+}
+@if (group) {
+  <form #editForm="ngForm" (ngSubmit)="save()">
+    @if (group.id) {
+      <mat-form-field class="full-width">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="group.id" id="id" name="id" placeholder="ID" readonly>
+      </mat-form-field>
+    }
+    <mat-form-field class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="group.name" id="name" name="name" placeholder="Name" required>
     </mat-form-field>
-    <mat-form-field style="width: 65%">
-      <mat-label>Title</mat-label>
-      <input matInput [(ngModel)]="group.events[i].title" name="group.events[{{i}}].title" placeholder="Title">
-    </mat-form-field>
-    <button mat-icon-button (click)="removeEvent(i)" aria-label="Remove Event"
-            style="float: right; margin: -70px -5px 0 0">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
-
-  <div class="button-row" role="group">
-    <button type="button" mat-mini-fab color="accent" (click)="addEvent()"
-            aria-label="Add Event" *ngIf="group.id" matTooltip="Add Event"
-            style="float: right; margin-top: -4px"><mat-icon>add</mat-icon></button>
-    <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid" id="save">Save</button>
-    <button type="button" mat-button color="accent" (click)="cancel()" id="cancel">Cancel</button>
-  </div>
-</form>
+    @if (group.events.length) {
+      <h3>Events</h3>
+    }
+    @for (event of group.events; track event; let i = $index) {
+      <div class="full-width">
+        <mat-form-field style="width: 35%">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker"
+            [(ngModel)]="group.events[i].date" name="group.events[{{i}}].date" placeholder="Date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field style="width: 65%">
+          <mat-label>Title</mat-label>
+          <input matInput [(ngModel)]="group.events[i].title" name="group.events[{{i}}].title" placeholder="Title">
+        </mat-form-field>
+        <button mat-icon-button (click)="removeEvent(i)" aria-label="Remove Event"
+          style="float: right; margin: -70px -5px 0 0">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
+    <div class="button-row" role="group">
+      @if (group.id) {
+        <button type="button" mat-mini-fab color="accent" (click)="addEvent()"
+          aria-label="Add Event" matTooltip="Add Event"
+          style="float: right; margin-top: -4px"><mat-icon>add</mat-icon></button>
+        }
+        <button type="submit" mat-raised-button color="primary" [disabled]="!editForm.form.valid" id="save">Save</button>
+        <button type="button" mat-button color="accent" (click)="cancel()" id="cancel">Cancel</button>
+      </div>
+    </form>
+  }
 ----
 ====
 +
@@ -1237,23 +1237,6 @@ Now, with your Angular app running, you should be able to add and edit groups!
 ----
 ====
 
-. Since this is not a standalone component, you must import `MatToolbarModule` in `app.module.ts`.
-+
-[source,typescript]
-----
-import { MatToolbarModule } from '@angular/material/toolbar';
-
-@NgModule({
-  ...
-  imports: [
-    ...
-    MatToolbarModule
-  ],
-  ...
-})
-export class AppModule { }
-----
-
 . Make some adjustments in `app.component.css` to make the toolbar look nicer.
 
 1. In the `.toolbar` rule, remove the `background-color` and `color` properties.
@@ -1275,7 +1258,7 @@ Spring Security added support for OpenID Connect (OIDC) in version 5.0, circa 20
 <dependency>
     <groupId>com.okta.spring</groupId>
     <artifactId>okta-spring-boot-starter</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.6</version>
 </dependency>
 ----
 
@@ -1613,7 +1596,6 @@ export class User {
 [source,typescript]
 ----
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../auth.service';
 import { User } from '../model/user';
@@ -1622,9 +1604,9 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink],
+  imports: [MatButtonModule, RouterLink],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   isAuthenticated!: boolean;
@@ -1683,9 +1665,9 @@ After all these changes, you should be able to restart both Spring Boot and Angu
 ----
 <properties>
     ...
-    <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-    <node.version>v18.16.0</node.version>
-    <npm.version>9.6.5</npm.version>
+    <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
+    <node.version>v18.18.2</node.version>
+    <npm.version>9.8.1</npm.version>
 </properties>
 
 ...
@@ -2033,9 +2015,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Java 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
@@ -2043,12 +2025,12 @@ jobs:
       - name: Run tests
         run: xvfb-run mvn verify -ntp -Pprod
       - name: Run e2e tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           browser: chrome
           start: mvn spring-boot:run -Pprod -ntp -f ../pom.xml
           install: false
-          wait-on: http://[::1]:8080
+          wait-on: http://localhost:8080
           wait-on-timeout: 120
           config: baseUrl=http://localhost:8080
           working-directory: app
