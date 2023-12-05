@@ -23,7 +23,7 @@ jobs:
           browser: chrome
           start: mvn spring-boot:run -Pprod -ntp -f ../pom.xml
           install: false
-          wait-on: http://[::1]:8080
+          wait-on: http://localhost:8080
           wait-on-timeout: 120
           config: baseUrl=http://localhost:8080
           working-directory: app

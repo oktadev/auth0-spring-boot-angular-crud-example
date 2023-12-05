@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupEditComponent } from './group-edit/group-edit.component';
@@ -19,9 +18,3 @@ export const routes: Routes = [
     component: GroupEditComponent
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
