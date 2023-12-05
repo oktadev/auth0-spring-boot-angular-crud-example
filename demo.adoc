@@ -1277,7 +1277,7 @@ auth0 apps create \
   --reveal-secrets
 ----
 
-. Copy the returned values from this command into an `.okta.env` file:
+. Copy the returned values from this command into an `okta.env` file:
 +
 [source,shell]
 ----
@@ -1288,7 +1288,7 @@ export OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 +
 [TIP]
 ====
-If you're on Windows, use `set` instead of `export` to set these environment variables and name the file `.okta.env.bat`:
+If you're on Windows, use `set` instead of `export` to set these environment variables and name the file `okta.env.bat`:
 
 [source,shell]
 ----
@@ -1300,13 +1300,13 @@ set OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 
 . Add `*.env` to your `.gitignore` file, so you don't accidentally expose your client secret.
 
-. Run `source .okta.env` (or `.okta.env.bat` on Windows) to set these environment variables in your current shell.
+. Run `source okta.env` (or `okta.env.bat` on Windows) to set these environment variables in your current shell.
 
 . Run `./mvnw` (or `mvnw` on Windows) to start the app.
 +
 [source,shell]
 ----
-source .okta.env
+source okta.env
 ./mvnw spring-boot:run
 ----
 
@@ -1953,7 +1953,7 @@ describe('Groups', () => {
 ----
 ====
 
-. Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
+. Add environment variables with your credentials to the `okta.env` (or `okta.env.bat`) file you created earlier.
 +
 [source,shell]
 ----
@@ -1962,7 +1962,7 @@ export CYPRESS_E2E_USERNAME=<your-email>
 export CYPRESS_E2E_PASSWORD=<your-password>
 ----
 
-. Run `source .okta.env` (or `.okta.env.bat` on Windows) to set these environment variables and start the app.
+. Run `source okta.env` (or `okta.env.bat` on Windows) to set these environment variables and start the app.
 +
 [source,shell]
 ----
@@ -1973,7 +1973,7 @@ mvn spring-boot:run -Pprod
 +
 [source,shell]
 ----
-source .okta.env
+source okta.env
 cd app
 npx cypress run --browser electron --config baseUrl=http://localhost:8080
 ----
