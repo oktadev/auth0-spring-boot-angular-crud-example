@@ -50,7 +50,7 @@ You can also use https://start.spring.io/#!type=maven-project&language=java&plat
 
 [source,shell]
 ----
-https start.spring.io/starter.zip type==maven-project bootVersion==3.2.0 \
+https start.spring.io/starter.tgz type==maven-project bootVersion==3.2.0 \
   dependencies==data-jpa,h2,web,validation \
   language==java platformVersion==17 \
   name==jugtours artifactId==jugtours \
@@ -1277,7 +1277,7 @@ auth0 apps create \
   --reveal-secrets
 ----
 
-. Copy the returned values from this command into an `okta.env` file:
+. Copy the returned values from this command into an `.okta.env` file:
 +
 [source,shell]
 ----
@@ -1288,7 +1288,7 @@ export OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 +
 [TIP]
 ====
-If you're on Windows, use `set` instead of `export` to set these environment variables and name the file `okta.env.bat`:
+If you're on Windows, use `set` instead of `export` to set these environment variables and name the file `.okta.env.bat`:
 
 [source,shell]
 ----
@@ -1300,13 +1300,13 @@ set OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 
 . Add `*.env` to your `.gitignore` file, so you don't accidentally expose your client secret.
 
-. Run `source okta.env` (or `okta.env.bat` on Windows) to set these environment variables in your current shell.
+. Run `source .okta.env` (or `.okta.env.bat` on Windows) to set these environment variables in your current shell.
 
 . Run `./mvnw` (or `mvnw` on Windows) to start the app.
 +
 [source,shell]
 ----
-source okta.env
+source .okta.env
 ./mvnw spring-boot:run
 ----
 
@@ -1617,27 +1617,37 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuthenticated = await this.auth.isAuthenticated();
-    await this.auth.getUser().subscribe(data => this.user = data);
+    this.auth.getUser().subscribe(data => this.user = data);
   }
-
 }
 ----
 ====
+
+. Update `app.config.ts` to import and use `provideHttpClient`.
++
+[source,typescript]
+.src/app/app.config.ts
+----
+import { provideHttpClient } from '@angular/common/http';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes), provideAnimations(), provideHttpClient()]
+};
+----
 
 . Modify `home.component.html` to show the Login button if the user is not logged in. Otherwise, show a Logout button. [`sba-home-html`]
 +
 [source,html]
 ----
-<div *ngIf="user; else login">
+@if (user) {
   <h2>Welcome, {{ user.name }}!</h2>
   <a mat-button color="primary" routerLink="/groups">Manage JUG Tour</a>
   <br/><br/>
   <button mat-raised-button color="primary" (click)="auth.logout()" id="logout">Logout</button>
-</div>
-<ng-template #login>
+} @else {
   <p>Please log in to manage your JUG Tour.</p>
   <button mat-raised-button color="primary" (click)="auth.login()" id="login">Login</button>
-</ng-template>
+}
 ----
 
 . Update `app/src/proxy.conf.js` to have additional proxy paths for `/oauth2` and `/login`:
@@ -1699,7 +1709,7 @@ After all these changes, you should be able to restart both Spring Boot and Angu
                                 <outputDirectory>${basedir}/target/classes/static</outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>app/dist/app</directory>
+                                        <directory>app/dist/app/browser</directory>
                                     </resource>
                                 </resources>
                             </configuration>
@@ -1953,7 +1963,7 @@ describe('Groups', () => {
 ----
 ====
 
-. Add environment variables with your credentials to the `okta.env` (or `okta.env.bat`) file you created earlier.
+. Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
 +
 [source,shell]
 ----
@@ -1962,7 +1972,7 @@ export CYPRESS_E2E_USERNAME=<your-email>
 export CYPRESS_E2E_PASSWORD=<your-password>
 ----
 
-. Run `source okta.env` (or `okta.env.bat` on Windows) to set these environment variables and start the app.
+. Run `source .okta.env` (or `.okta.env.bat` on Windows) to set these environment variables and start the app.
 +
 [source,shell]
 ----
@@ -1973,7 +1983,7 @@ mvn spring-boot:run -Pprod
 +
 [source,shell]
 ----
-source okta.env
+source .okta.env
 cd app
 npx cypress run --browser electron --config baseUrl=http://localhost:8080
 ----

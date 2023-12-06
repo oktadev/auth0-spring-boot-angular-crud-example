@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Group } from '../model/group';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-group-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatTableModule, MatIconModule],
+  imports: [RouterLink, MatButtonModule, MatTableModule, MatIconModule, DatePipe, HttpClientModule],
   templateUrl: './group-list.component.html',
-  styleUrls: ['./group-list.component.css']
+  styleUrl: './group-list.component.css'
 })
 export class GroupListComponent {
   title = 'Group List';

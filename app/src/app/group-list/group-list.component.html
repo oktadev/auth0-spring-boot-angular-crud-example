@@ -9,9 +9,9 @@
 
 <h2>{{title}}</h2>
 @if (loading) {
-  <div>
-    <p>Loading...</p>
-  </div>
+<div>
+  <p>Loading...</p>
+</div>
 } @else {
   @if (feedback.message) {
     <div class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>

@@ -38,7 +38,7 @@ auth0 apps create \
   --reveal-secrets
 ```
 
-Copy the results from the CLI into an `okta.env` file:
+Copy the results from the CLI into an `.okta.env` file:
 
 ```shell
 export OKTA_OAUTH2_ISSUER=https://<your-auth0-domain>/
@@ -46,7 +46,7 @@ export OKTA_OAUTH2_CLIENT_ID=<your-client-id>
 export OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 ```
 
-If you're on Windows, name the file `okta.env.bat` and use `set` instead of `export`:
+If you're on Windows, name the file `.okta.env.bat` and use `set` instead of `export`:
 
 ```shell
 set OKTA_OAUTH2_ISSUER=https://<your-auth0-domain>/
@@ -54,10 +54,10 @@ set OKTA_OAUTH2_CLIENT_ID=<your-client-id>
 set OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 ```
 
-Then, run `source okta.env` (or run `okta.env.bat` on Windows) to set the environment variables. Start your app and log in at `http://localhost:8080`:
+Then, run `source .okta.env` (or run `.okta.env.bat` on Windows) to set the environment variables. Start your app and log in at `http://localhost:8080`:
 
 ```shell
-source okta.env
+source .okta.env
 mvn spring-boot:run -Pprod
 ```
 

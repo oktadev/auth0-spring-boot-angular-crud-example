@@ -21,13 +21,13 @@ class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        Stream.of("Omaha JUG", "Kansas City JUG", "Chicago JUG",
-                "Dallas JUG", "Philly JUG", "Garden State JUG", "NY Java SIG")
+        Stream.of("Utah JUG", "Dallas JUG", "Tampa JUG", "Nashville JUG", "Detroit JUG")
             .forEach(name -> repository.save(new Group(name)));
 
-        Group jug = repository.findByName("Garden State JUG");
-        Event e = new Event(Instant.parse("2023-10-18T18:00:00.000Z"),
-            "OAuth for Java Developers", "Learn all about OAuth and OIDC + Java!");
+        Group jug = repository.findByName("Tampa JUG");
+        Event e = new Event(Instant.parse("2024-04-24T18:00:00.000Z"),
+            "What the Heck is OAuth?",
+            "Learn how and where OAuth can benefit your applications.");
         jug.setEvents(Collections.singleton(e));
         repository.save(jug);
 
