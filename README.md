@@ -63,6 +63,24 @@ mvn spring-boot:run -Pprod
 
 NOTE: You can also use your [Auth0 dashboard](https://manage.auth0.com) to configure your application. Just make sure to use the same URLs specified above.
 
+You can prove everything works by running this project's Cypress tests. Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
+
+```shell
+export CYPRESS_E2E_DOMAIN=<your-auth0-domain> # use the raw value, no https prefix
+export CYPRESS_E2E_USERNAME=<your-email>
+export CYPRESS_E2E_PASSWORD=<your-password>
+```
+
+Then, run the Cypress tests and watch them pass:
+
+```shell
+source .okta.env
+cd app
+ng e2e
+```
+
+You can see [view this project's CI pipeline](.github/workflows/main.yml) and see that all its tests [are passing too](https://github.com/oktadev/auth0-spring-boot-angular-crud-example/actions).
+
 ## Links
 
 This example uses the following open source libraries:
