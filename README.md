@@ -79,7 +79,7 @@ cd app
 ng e2e
 ```
 
-You can see [view this project's CI pipeline](.github/workflows/main.yml) and see that all its tests [are passing too](https://github.com/oktadev/auth0-spring-boot-angular-crud-example/actions).
+You can [view this project's CI pipeline](.github/workflows/main.yml) and see that all its [workflows are passing too](https://github.com/oktadev/auth0-spring-boot-angular-crud-example/actions). 😇
 
 ## Links
 
