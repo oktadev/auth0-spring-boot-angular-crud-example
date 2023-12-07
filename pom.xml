@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.okta.developer</groupId>
@@ -15,9 +15,9 @@
     <description>Track your JUG Tours!</description>
     <properties>
         <java.version>17</java.version>
-        <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <node.version>v18.16.0</node.version>
-        <npm.version>9.6.5</npm.version>
+        <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
+        <node.version>v18.18.2</node.version>
+        <npm.version>9.8.1</npm.version>
     </properties>
     <dependencies>
         <dependency>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>com.okta.spring</groupId>
             <artifactId>okta-spring-boot-starter</artifactId>
-            <version>3.0.4</version>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -86,7 +86,7 @@
                                     <outputDirectory>${basedir}/target/classes/static</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>app/dist/app</directory>
+                                            <directory>app/dist/app/browser</directory>
                                         </resource>
                                     </resources>
                                 </configuration>

@@ -2,7 +2,7 @@
 
 This example app shows how to create a Spring Boot API and CRUD (create, read, update, and delete) its data with a beautiful Angular + Angular Material app.
 
-Please read [Build a Beautiful CRUD App with Spring Boot and Angular](https://auth0.com/blog/spring-boot-angular-crud) to see how it was created or [watch this screencast](https://www.youtube.com/watch?v=HHJXAtR1tSY). 
+Please read [Build a Beautiful CRUD App with Spring Boot and Angular](https://auth0.com/blog/spring-boot-angular-crud) to see how it was created or follow [this demo script](demo.adoc).
 
 **Prerequisites:** [Java 17](http://sdkman.io) and [Node.js 18+](https://nodejs.org/)
 
@@ -38,7 +38,9 @@ auth0 apps create \
   --reveal-secrets
 ```
 
-Copy the results from the CLI into an `okta.env` file:
+> **TIP**: You can also use your [Auth0 dashboard](https://manage.auth0.com) to register your application. Just make sure to use the same URLs as above.
+
+Copy the results from the CLI into an `.okta.env` file:
 
 ```shell
 export OKTA_OAUTH2_ISSUER=https://<your-auth0-domain>/
@@ -46,7 +48,7 @@ export OKTA_OAUTH2_CLIENT_ID=<your-client-id>
 export OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 ```
 
-If you're on Windows, name the file `okta.env.bat` and use `set` instead of `export`:
+If you're on Windows, name the file `.okta.env.bat` and use `set` instead of `export`:
 
 ```shell
 set OKTA_OAUTH2_ISSUER=https://<your-auth0-domain>/
@@ -54,14 +56,30 @@ set OKTA_OAUTH2_CLIENT_ID=<your-client-id>
 set OKTA_OAUTH2_CLIENT_SECRET=<your-client-secret>
 ```
 
-Then, run `source okta.env` (or run `okta.env.bat` on Windows) to set the environment variables. Start your app and log in at `http://localhost:8080`:
+Then, run `source .okta.env` (or run `.okta.env.bat` on Windows) to set the environment variables. Start your app and log in at `http://localhost:8080`:
 
 ```shell
-source okta.env
+source .okta.env
 mvn spring-boot:run -Pprod
 ```
 
-NOTE: You can also use your [Auth0 dashboard](https://manage.auth0.com) to configure your application. Just make sure to use the same URLs specified above.
+You can prove everything works by running this project's Cypress tests. Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
+
+```shell
+export CYPRESS_E2E_DOMAIN=<your-auth0-domain> # use the raw value, no https prefix
+export CYPRESS_E2E_USERNAME=<your-email>
+export CYPRESS_E2E_PASSWORD=<your-password>
+```
+
+Then, run the Cypress tests and watch them pass:
+
+```shell
+source .okta.env
+cd app
+ng e2e
+```
+
+You can [view this project's CI pipeline](.github/workflows/main.yml) and see that all its [workflows are passing too](https://github.com/oktadev/auth0-spring-boot-angular-crud-example/actions). 😇
 
 ## Links
 

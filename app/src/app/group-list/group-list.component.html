@@ -8,12 +8,14 @@
 <a [routerLink]="['/group/new']" mat-raised-button color="primary" style="float: right" id="add">Add Group</a>
 
 <h2>{{title}}</h2>
-<div *ngIf="loading; else list">
+@if (loading) {
+<div>
   <p>Loading...</p>
 </div>
-
-<ng-template #list>
-  <div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+} @else {
+  @if (feedback.message) {
+    <div class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+  }
   <table mat-table [dataSource]="groups">
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
@@ -26,10 +28,10 @@
     <ng-container matColumnDef="events">
       <mat-header-cell *matHeaderCellDef> Events </mat-header-cell>
       <mat-cell *matCellDef="let item">
-        <ng-container *ngFor="let event of item.events">
+        @for (event of item.events; track event) {
           {{event.date | date }}: {{ event.title }}
           <br/>
-        </ng-container>
+        }
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
@@ -42,4 +44,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </table>
-</ng-template>
+}

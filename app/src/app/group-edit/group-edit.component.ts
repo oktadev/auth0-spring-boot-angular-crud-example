@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map, of, switchMap } from 'rxjs';
 import { Group } from '../model/group';
 import { Event } from '../model/event';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,11 +16,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-group-edit',
   standalone: true,
   imports: [
-    CommonModule, MatInputModule, FormsModule, MatButtonModule, RouterLink,
-    MatDatepickerModule, MatIconModule, MatNativeDateModule, MatTooltipModule
+    FormsModule,
+    HttpClientModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    RouterLink
   ],
   templateUrl: './group-edit.component.html',
-  styleUrls: ['./group-edit.component.css']
+  styleUrl: './group-edit.component.css'
 })
 export class GroupEditComponent implements OnInit {
   group!: Group;
@@ -55,7 +61,7 @@ export class GroupEditComponent implements OnInit {
     const id = this.group.id;
     const method = id ? 'put' : 'post';
 
-    this.http[method]<Group>(`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
+    this.http[method](`/api/group${id ? '/' + id : ''}`, this.group).subscribe({
       next: () => {
         this.feedback = {type: 'success', message: 'Save was successful!'};
         setTimeout(async () => {
