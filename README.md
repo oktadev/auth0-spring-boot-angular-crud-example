@@ -38,6 +38,8 @@ auth0 apps create \
   --reveal-secrets
 ```
 
+> **TIP**: You can also use your [Auth0 dashboard](https://manage.auth0.com) to register your application. Just make sure to use the same URLs as above.
+
 Copy the results from the CLI into an `.okta.env` file:
 
 ```shell
@@ -60,8 +62,6 @@ Then, run `source .okta.env` (or run `.okta.env.bat` on Windows) to set the envi
 source .okta.env
 mvn spring-boot:run -Pprod
 ```
-
-NOTE: You can also use your [Auth0 dashboard](https://manage.auth0.com) to configure your application. Just make sure to use the same URLs specified above.
 
 You can prove everything works by running this project's Cypress tests. Add environment variables with your credentials to the `.okta.env` (or `.okta.env.bat`) file you created earlier.
 
