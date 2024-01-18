@@ -4,7 +4,7 @@ This example app shows how to create a Spring Boot API and CRUD (create, read, u
 
 Please read [Build a Beautiful CRUD App with Spring Boot and Angular](https://auth0.com/blog/spring-boot-angular-crud) to see how it was created or follow [this demo script](demo.adoc).
 
-You can watch a demo of this example in the screencast below:
+You can also watch a demo of this example in the screencast below:
 
 [![Building a CRUD app with Spring Boot and Angular!](static/spring-boot-angular.webp)](https://youtu.be/0pnSVdVn_NM)
 
